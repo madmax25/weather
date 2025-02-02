@@ -24,7 +24,12 @@
                 /** (Max commentary 2025-02-01)
                  * bind is used to keep the function in the context of the class
                  *
-                 *  pass unit imperial to get the temps in Fahrenheit
+                 * pass unit imperial to get the temps in Fahrenheit
+                 *
+                 *
+                 * DANGER: The biggest problem with this implementation is the secret key exposed in the client side code.
+                 * DANGER: With more time this would need to be addressed.
+                 *
                  */
                 axios.get('https://api.openweathermap.org/data/2.5/weather', {
                     params: {
