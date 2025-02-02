@@ -22,7 +22,9 @@
                 console.log(new Date().toISOString(), '[Test]', 'Running the test');
 
                 /** (Max commentary 2025-02-01)
-                 * bind is used to keep the function in the context of the class.
+                 * bind is used to keep the function in the context of the class
+                 *
+                 *  pass unit imperial to get the temps in Fahrenheit
                  */
                 axios.get('https://api.openweathermap.org/data/2.5/weather', {
                     params: {
@@ -89,6 +91,7 @@
                 </table>
                 `;
                 this.testResults.innerHTML = (html || '').toString();
+                this.removeButton();
             }
 
             setError(error) {
@@ -103,6 +106,12 @@
                 }
 
                 this.testResults.innerHTML = (message || '').toString();
+                this.removeButton();
+            }
+
+            removeButton() {
+                const buttonContainer = document.getElementsByClassName('button-container')[0];
+                buttonContainer.hidden = true;
             }
         }
     </script>
