@@ -43,12 +43,65 @@
 
 
             setResults(results) {
-                // TODO: Format the results
-                this.testResults.innerHTML = (results || '').toString();
+                const cityName = results.name; 
+
+                // Format temp and feels like to a single decimal point as this is most human readable. 
+                // Designate temperature unit is Fahrenheit
+                const temperature = results.main.temp.toFixed(1) + '° F';
+                const feelsLike = results.main.feels_like.toFixed(1) + '° F';
+
+                const sunrise = new Date(results.sys.sunrise * 1000).toLocaleTimeString('en-US', { 
+                          hour: 'numeric', 
+                          minute: '2-digit', 
+                          hour12: true 
+                        });
+
+                const sunset = new Date(results.sys.sunset * 1000).toLocaleTimeString('en-US', { 
+                          hour: 'numeric', 
+                          minute: '2-digit', 
+                          hour12: true 
+                        });
+
+                const html = `
+                <table>
+                   <tbody>
+                     <tr>
+                         <td>City</td>
+                         <td>${cityName}</td>
+                      </tr>
+                      <tr>
+                         <td>Temperature</td>
+                         <td>${temperature}</td>
+                      </tr>
+                      <tr>
+                         <td>Feels Like</td>
+                         <td>${feelsLike}</td>
+                      </tr>
+                      <tr>
+                         <td>Sunrise</td>
+                         <td>${sunrise}</td>
+                      </tr>
+                      <tr>
+                         <td>Sunset</td>
+                         <td>${sunset}</td>
+                      </tr>
+                   </tbody>
+                </table>
+                `;
+                this.testResults.innerHTML = (html || '').toString();
             }
 
-            setError(message) {
-                // TODO: Format the error
+            setError(error) {
+                /** (Max commentary 2025-02-01)
+                 * Differentiate API authentication/authorization error
+                 */
+                let message;
+                if (error.status === 401 || error.status === 403) {
+                    message = 'API authentication error.'
+                } else {
+                    message = 'Unspecified API error occurred.'
+                }
+
                 this.testResults.innerHTML = (message || '').toString();
             }
         }
@@ -77,7 +130,23 @@
         .button-container > button:active {
             background-color: #006000;
         }
-    </style>
+
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+        
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+          background-color: #dddddd;
+        }
+       </style>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
